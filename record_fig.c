@@ -6,13 +6,29 @@
 /*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/30 17:14:38 by inovykov          #+#    #+#             */
-/*   Updated: 2017/11/30 17:17:31 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/06 17:37:45 by inovykov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static int		*put_x_cordinates(char *str_figures)
+int			count_figures(char *str_figures)
+{
+	int			hash;
+	int			count;
+
+	hash = 0;
+	while (*str_figures)
+	{
+		if (*str_figures == '#')
+			hash++;
+		str_figures++;
+	}
+	count = hash / 4;
+	return (count);
+}
+
+static int	*put_x_cordinates(char *str_figures)
 {
 	int			*arr;
 	int			i;
@@ -30,23 +46,15 @@ static int		*put_x_cordinates(char *str_figures)
 		(str_figures[i] == '\n') ? x = -1 : x;
 		x++;
 	}
-	// printf("arr[0] %d\n", arr[0]);
-	// printf("arr[1] %d\n", arr[1]);
-	// printf("arr[2] %d\n", arr[2]);
-	// printf("arr[3] %d\n", arr[3]);
 	while (arr[0] != 0 && arr[1] != 0 && arr[2] != 0 && arr[3] != 0 && (j = -1)) 
 	{
 		while (++j != 4)
 			arr[j] = arr[j] - 1;
 	}
-	// printf("arr[0] %d\n", arr[0]);
-	// printf("arr[1] %d\n", arr[1]);
-	// printf("arr[2] %d\n", arr[2]);
-	// printf("arr[3] %d\n", arr[3]);
 	return (arr);
 }
 
-static int		*put_y_cordinates(char *str_figures)
+static int	*put_y_cordinates(char *str_figures)
 {
 	int			*arr;
 	int			i;
@@ -71,10 +79,10 @@ static int		*put_y_cordinates(char *str_figures)
 	return (arr);
 }
 
-t_figure		*ft_record_all_figures(char *str_figures, int figures)
+t_figure	*ft_record_all_figures(char *str_figures, int figures)
 {
-	t_figure	*arr_figures; //array of structures, where one stracture stores info about one figure
-	int			i; //iterates figures in arr of structures
+	t_figure	*arr_figures;
+	int			i;
 	int			j;
 	int			str_len;
 	char		c;
@@ -95,4 +103,24 @@ t_figure		*ft_record_all_figures(char *str_figures, int figures)
 		i++;
 	}
 	return (arr_figures);
+}
+
+void		ft_render_map(int cell)
+{
+	int			row;
+
+	g_map = (char**)malloc(sizeof(char*) * (cell + 1));
+	if (!g_map)
+		print_error(2);
+	else
+	{
+		row = -1;
+		while (++row < cell)
+		{
+			g_map[row] = ft_strnew(cell);
+			if (g_map[row] == NULL)
+				free_willy(g_map);
+		}
+		g_map[row] = NULL;
+	}
 }

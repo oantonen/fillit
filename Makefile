@@ -6,36 +6,39 @@
 #    By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/21 16:03:40 by inovykov          #+#    #+#              #
-#    Updated: 2017/11/28 19:33:40 by inovykov         ###   ########.fr        #
+#    Updated: 2017/12/06 17:51:22 by inovykov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fillit
 
-FIL_LIB = libfillit.a
+SRC =  main.c check_input.c record_fig.c \
+		extra_functions.c \
+		solving.c printing.c
 
-SRC =  print_error.c check_input.c check_tetra.c ft_strlen.c ft_strncpy.c ft_strnew.c ft_sqrt.c
+OBJ = $(SRC:%.c=%.o)
 
-OBJ = $(SRC:.c=.o)
+HEADERS = fillit.h
 
 FLAGS = -Wall -Werror -Wextra
 
-all: $(FIL_LIB) $(NAME)
-
-%.o : %.c
-	gcc $(FLAGS) -c $< -o $@ 
-
-$(FIL_LIB) : $(OBJ)
-	ar rc $(FIL_LIB) $(OBJ)
-	ranlib $(FIL_LIB)
+all: $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(FLAGS) -o $(NAME) main.c $(FIL_LIB)
+	@gcc -o $(NAME) $(OBJ)
+	@echo "."
+	@echo "."
+	@echo "."
+	@echo "All cookies were baked"
+
+$(OBJ) : $(SRC)
+	@gcc $(FLAGS) -c -I $(HEADERS) $(SRC) 
 
 clean:
-	/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ)
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
+	@echo "All clear"
 
 re: fclean all

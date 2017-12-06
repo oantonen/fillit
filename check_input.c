@@ -6,7 +6,7 @@
 /*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 17:11:26 by inovykov          #+#    #+#             */
-/*   Updated: 2017/11/27 19:19:07 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/06 17:29:10 by inovykov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int	check_map_len(char *str_figures)
 {
-	size_t	len;
+	int		len;
 
 	len = ft_strlen(str_figures);
-	if (len < 21 || len > 546) /*less 1 or more 26 figures*/
+	if (len < 20 || len > 545)
 		return (FALSE);
 	return (TRUE);
 }
@@ -27,34 +27,66 @@ static int	check_figure_matrix(char *str_figures, int j)
 	int		len;
 	int		row;
 
-	len = (int)ft_strlen(str_figures);
-	//printf("len %d\n", len);
+	len = ft_strlen(str_figures);
 	row = 1;
 	while (len > j)
 	{
-		//printf("curent cell %d\n", j);
 		if (str_figures[j + 5] == '\n')
 		{
 			j = j + 5;
 			row++;
 			if ((row + 1) % 5 == 0)
 			{
-				//printf("now j is %d\n", j);
 				if (str_figures[j + 1] != '\n' && str_figures[j + 1] != '\0')
-				{
-					//printf("now j is %d\n", j);
-					printf("check betwin tetrimino\n");
 					return (FALSE);
-				}
 				else
-				{
-					//printf("else: now j is %d\n", j);
 					j = j + 1;
-					//printf("else2: now j is %d\n", j);
-				}
 				row++;
 			}					
 		}
+		else
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
+static int	is_figure_valid(char *str)
+{
+	int		b;
+	int		hash;
+	int		tetra;
+
+	b = 0;
+	hash = 0;
+	tetra = 0;
+	while (b < 21)
+	{
+		if (str[b] == '#')
+		{
+			(b + 1 < 21 && str[b + 1] == '#') ? tetra++ : tetra;
+			(b + 5 < 21 && str[b + 5] == '#') ? tetra++ : tetra;
+			(b - 1 >= 0 && str[b - 1] == '#') ? tetra++ : tetra;
+			(b - 5 >= 0 && str[b - 5] == '#') ? tetra++ : tetra;
+			hash++;
+		}
+		b++;
+		if ((tetra == 6 || tetra == 8) && hash == 4)
+			return (TRUE);
+	}
+	return (FALSE);
+}
+
+static int	check_tetra(char *str_figures, int str_len)
+{
+	char	block[21];
+	int		i;
+
+	i = 0;
+	while (i < str_len)
+	{
+		ft_strncpy(block, &str_figures[i], 20);
+		if (is_figure_valid(block) == TRUE)
+			i = i + 21;
 		else
 			return (FALSE);
 	}
@@ -67,27 +99,19 @@ int			check_input(int str_len, char *str_figures)
 	int		j;
 
 	i = -1;
-	printf("%d\n", str_len);
-	printf("I am validating\n");
 	while (str_len > ++i)
 	{
 		if (check_map_len(str_figures) == FALSE)
 			return (FALSE);
 		if (str_figures[i] != '#' && str_figures[i] != '.' && str_figures[i] != '\n')
-		{
-			printf("some chars not #.\n");
 			return (FALSE);
-		}
 		if (i == 4)
 		{
 			j = i;
 			if (str_figures[i] == '\n')
 			{
 				if (check_figure_matrix(str_figures, j) == FALSE)
-				{
-					printf("invalid matrix\n");
 					return (FALSE);
-				}
 			}
 			else
 				return (FALSE);
@@ -95,30 +119,5 @@ int			check_input(int str_len, char *str_figures)
 	}
 	if (check_tetra(str_figures, str_len) == FALSE)
 		return (FALSE);
-	printf("allright!\n");
 	return (TRUE);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

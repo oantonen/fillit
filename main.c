@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 10:10:46 by inovykov          #+#    #+#             */
-/*   Updated: 2017/11/24 12:36:48 by oantonen         ###   ########.fr       */
+/*   Updated: 2017/12/06 17:39:13 by inovykov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static int	check_error(int ac, int fp)
 
 static int	count_file_len(int fp)
 {
-	int		i;
-	char	buff;
+	int			i;
+	char		buff;
 
 	i = 0;
 	while (read(fp, &buff, 1) > 0)
@@ -38,34 +38,65 @@ static int	count_file_len(int fp)
 	return (i);
 }
 
-int			main(int ac, char **av)
+static char	*record_file(int ac, char *file_name, int fp, int str_len)
 {
-	char	buff;
-	char	*str_figures;
-	int		str_len;
-	int		fp;
-	int		i;
+	char		*str_figures;
+	int			i;
+	char		buff;
 
-	fp = open(av[1], O_RDONLY);
-	if (check_error(ac, fp) == FALSE)
-		return(0);
-	str_len = count_file_len(fp);
-	close(fp);
 	str_figures = (char*)malloc(sizeof(char) * (str_len + 2));
-	// fp = open(av[1], O_RDONLY);
-	if (check_error(ac, (open(av[1], O_RDONLY))) == FALSE)
+	if (!str_figures)
+	{
+		free(str_figures);
+		print_error(2);
+		return (0);
+	}
+	if (check_error(ac, (open(file_name, O_RDONLY))) == FALSE)
 		return(0);
 	i = 0;
 	while (read(fp, &buff, 1) > 0)
 		str_figures[i++] = buff;
 	str_figures[i] = '\0';
 	close(fp);
+	return (str_figures);
+}
+
+static void	solving(char *str_figures)
+{
+	int			figures;
+	t_figure	*arr_figs;
+	int			cells;
+
+	figures = count_figures(str_figures);
+	arr_figs = ft_record_all_figures(str_figures, figures);
+	cells = ft_sqrt(figures * 4);
+	ft_render_map(cells);
+	if (find_solution(arr_figs, figures, cells) == TRUE)
+		print_map(g_map, cells);
+	else
+	{
+		free(g_map);
+		ft_render_map(++cells);
+		find_solution(arr_figs, figures, cells);
+		print_map(g_map, cells);
+	}
+}	
+
+int			main(int ac, char **av)
+{
+	char	*str_figures;
+	int		str_len;
+	int		fp;
+
+	fp = open(av[1], O_RDONLY);
+	if (check_error(ac, fp) == FALSE)
+		return(0);
+	str_len = count_file_len(fp);
+	close(fp);
+	str_figures = record_file(ac, av[1], fp, str_len);
 	if (check_input(str_len, str_figures) == TRUE)
-		printf("valid %d\n", check_input(str_len, str_figures));
+		solving(str_figures);
 	else
-		printf("invalid input\n");
-		/*print_solution(solve(str_figurs));
-	else
-		print_error(2);*/
+		print_error(2);
 	return (0);
 }

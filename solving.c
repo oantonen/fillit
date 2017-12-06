@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solve_general.c                                    :+:      :+:    :+:   */
+/*   solving.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/30 16:25:50 by inovykov          #+#    #+#             */
-/*   Updated: 2017/12/06 16:46:24 by oantonen         ###   ########.fr       */
+/*   Created: 2017/12/06 17:21:36 by inovykov          #+#    #+#             */
+/*   Updated: 2017/12/06 17:42:58 by inovykov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,7 @@ void	free_willy(char **arr)
 	print_error(2);
 }
 
-void	ft_render_map(int cell)
-{
-	int	row;
-
-	g_map = (char**)malloc(sizeof(char*) * (cell + 1));
-	if (!g_map)
-		print_error(2);
-	else
-	{
-		row = -1;
-		while (++row < cell)
-		{
-			g_map[row] = ft_strnew(cell);
-			if (g_map[row] == NULL)
-				free_willy(g_map);
-		}
-		g_map[row] = NULL;
-	}
-}
-
-void	delfigure(t_figure coordinates, int x, int y)
+void	del_figure(t_figure coordinates, int x, int y)
 {
 	int x2;
 	int i;
@@ -61,7 +41,7 @@ void	delfigure(t_figure coordinates, int x, int y)
 	}
 }
 
-int		possible_to_put(t_figure coordinates, int x, int y, int cells)
+int		is_possible_to_put(t_figure coordinates, int x, int y, int cells)
 {
 	int i;
 	int x2;
@@ -84,7 +64,7 @@ int		possible_to_put(t_figure coordinates, int x, int y, int cells)
 	return (TRUE);
 }
 
-void	put_figureonmap(t_figure coordinates, int x, int y, char **g_map)
+void	put_figure_on_map(t_figure coordinates, int x, int y, char **g_map)
 {
 	int i;
 	int y2;
@@ -102,7 +82,7 @@ void	put_figureonmap(t_figure coordinates, int x, int y, char **g_map)
 	}
 }
 
-int		print_solution(t_figure *coordinates, int figures, int cells)
+int		find_solution(t_figure *coordinates, int figures, int cells)
 {
 	int	x;
 	int	y;
@@ -111,14 +91,14 @@ int		print_solution(t_figure *coordinates, int figures, int cells)
 	y = 0;
 	while (y != cells)
 	{
-		if (possible_to_put(*coordinates, x, y, cells - 1) == 1)
+		if (is_possible_to_put(*coordinates, x, y, cells - 1) == 1)
 		{
-			put_figureonmap(*coordinates, x, y, g_map);
+			put_figure_on_map(*coordinates, x, y, g_map);
 			if (figures - 1 != 0)
 			{
-				if (print_solution(++coordinates, figures - 1, cells) == 1)
+				if (find_solution(++coordinates, figures - 1, cells) == 1)
 					return (1);
-				delfigure(*--coordinates, x, y);
+				del_figure(*--coordinates, x, y);
 			}
 			else
 				return (1);
