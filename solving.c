@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solving.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 17:21:36 by inovykov          #+#    #+#             */
-/*   Updated: 2017/12/06 17:42:58 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/07 17:42:10 by oantonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,25 @@ int		find_solution(t_figure *coordinates, int figures, int cells)
 	int	x;
 	int	y;
 
-	x = 0;
+	x = -1;
 	y = 0;
-	while (y != cells)
+	while (y != cells && ++x != -2)
 	{
-		if (is_possible_to_put(*coordinates, x, y, cells - 1) == 1)
+		if (is_possible_to_put(*coordinates, x, y, cells - 1) == TRUE)
 		{
 			put_figure_on_map(*coordinates, x, y, g_map);
 			if (figures - 1 != 0)
 			{
-				if (find_solution(++coordinates, figures - 1, cells) == 1)
-					return (1);
-				del_figure(*--coordinates, x, y);
+				if (find_solution(++coordinates, figures - 1, cells) == TRUE)
+					return (TRUE);
+				if (check_all_same(*coordinates, *(coordinates - 1)) == FALSE)
+					del_figure(*--coordinates, x, y);
 			}
 			else
-				return (1);
+				return (TRUE);
 		}
-		x++;
-		(x == cells) ? (x = -1, y = y + 1) : x;
+		(x == cells) ? (y = y + 1) : y;
+		(x == cells) ? (x = -1) : x;
 	}
 	return (0);
 }

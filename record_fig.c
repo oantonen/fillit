@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   record_fig.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/30 17:14:38 by inovykov          #+#    #+#             */
-/*   Updated: 2017/12/06 17:37:45 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/07 17:40:30 by oantonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	*put_x_cordinates(char *str_figures)
 		(str_figures[i] == '\n') ? x = -1 : x;
 		x++;
 	}
-	while (arr[0] != 0 && arr[1] != 0 && arr[2] != 0 && arr[3] != 0 && (j = -1)) 
+	while (arr[0] != 0 && arr[1] != 0 && arr[2] != 0 && arr[3] != 0 && (j = -1))
 	{
 		while (++j != 4)
 			arr[j] = arr[j] - 1;

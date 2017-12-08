@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 10:10:46 by inovykov          #+#    #+#             */
-/*   Updated: 2017/12/06 17:39:13 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/07 17:38:16 by oantonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*record_file(int ac, char *file_name, int fp, int str_len)
 		return (0);
 	}
 	if (check_error(ac, (open(file_name, O_RDONLY))) == FALSE)
-		return(0);
+		return (0);
 	i = 0;
 	while (read(fp, &buff, 1) > 0)
 		str_figures[i++] = buff;
@@ -77,10 +77,11 @@ static void	solving(char *str_figures)
 	{
 		free(g_map);
 		ft_render_map(++cells);
-		find_solution(arr_figs, figures, cells);
+		while (find_solution(arr_figs, figures, cells) == FALSE)
+			ft_render_map(++cells);
 		print_map(g_map, cells);
 	}
-}	
+}
 
 int			main(int ac, char **av)
 {
@@ -90,9 +91,14 @@ int			main(int ac, char **av)
 
 	fp = open(av[1], O_RDONLY);
 	if (check_error(ac, fp) == FALSE)
-		return(0);
+		return (0);
 	str_len = count_file_len(fp);
 	close(fp);
+	if (str_len == 0)
+	{
+		print_error(2);
+		return (0);
+	}
 	str_figures = record_file(ac, av[1], fp, str_len);
 	if (check_input(str_len, str_figures) == TRUE)
 		solving(str_figures);

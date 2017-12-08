@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extra_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 17:48:29 by inovykov          #+#    #+#             */
-/*   Updated: 2017/12/06 17:49:16 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/07 18:06:21 by oantonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_sqrt(int nb)
 {
-	int i;
+	int		i;
 
 	i = 2;
 	while (i * i < nb)
@@ -22,9 +22,9 @@ int		ft_sqrt(int nb)
 	return (i);
 }
 
-int	ft_strlen(const char *str)
+int		ft_strlen(const char *str)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -34,7 +34,7 @@ int	ft_strlen(const char *str)
 
 char	*ft_strncpy(char *dst, char *src, int len)
 {
-	char *ptr;
+	char	*ptr;
 
 	ptr = dst;
 	while (len)
@@ -72,4 +72,20 @@ char	*ft_strnew(int size)
 	}
 	else
 		return (NULL);
+}
+
+int		check_all_same(t_figure current_fig, t_figure next_fig)
+{
+	int		i;
+
+	i = 0;
+	while (i != 4)
+	{
+		if (current_fig.x[i] == next_fig.x[i]
+			&& current_fig.y[i] == next_fig.y[i])
+			i++;
+		else
+			return (FALSE);
+	}
+	return (TRUE);
 }

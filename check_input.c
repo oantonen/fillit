@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 17:11:26 by inovykov          #+#    #+#             */
-/*   Updated: 2017/12/06 17:29:10 by inovykov         ###   ########.fr       */
+/*   Updated: 2017/12/07 13:36:01 by oantonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	check_figure_matrix(char *str_figures, int j)
 				else
 					j = j + 1;
 				row++;
-			}					
+			}
 		}
 		else
 			return (FALSE);
@@ -93,7 +93,7 @@ static int	check_tetra(char *str_figures, int str_len)
 	return (TRUE);
 }
 
-int			check_input(int str_len, char *str_figures)
+int			check_input(int str_len, char *str_fig)
 {
 	int		i;
 	int		j;
@@ -101,23 +101,23 @@ int			check_input(int str_len, char *str_figures)
 	i = -1;
 	while (str_len > ++i)
 	{
-		if (check_map_len(str_figures) == FALSE)
+		if (check_map_len(str_fig) == FALSE)
 			return (FALSE);
-		if (str_figures[i] != '#' && str_figures[i] != '.' && str_figures[i] != '\n')
+		if (str_fig[i] != '#' && str_fig[i] != '.' && str_fig[i] != '\n')
 			return (FALSE);
 		if (i == 4)
 		{
 			j = i;
-			if (str_figures[i] == '\n')
+			if (str_fig[i] == '\n')
 			{
-				if (check_figure_matrix(str_figures, j) == FALSE)
+				if (check_figure_matrix(str_fig, j) == FALSE)
 					return (FALSE);
 			}
 			else
 				return (FALSE);
 		}
 	}
-	if (check_tetra(str_figures, str_len) == FALSE)
+	if (check_tetra(str_fig, str_len) == FALSE)
 		return (FALSE);
 	return (TRUE);
 }
