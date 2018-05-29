@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: oantonen <oantonen@student.42.fr>          +#+  +:+       +#+         #
+#    By: inovykov <inovykov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/21 16:03:40 by inovykov          #+#    #+#              #
-#    Updated: 2017/12/07 18:20:22 by oantonen         ###   ########.fr        #
+#    Updated: 2017/12/07 20:16:39 by inovykov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ SRC =  main.c check_input.c record_fig.c \
 OBJ = $(SRC:%.c=%.o)
 
 HEADERS = fillit.h
+
+OBJ = $(SRC:%.c=%.o)
 
 FLAGS = -Wall -Werror -Wextra
 
